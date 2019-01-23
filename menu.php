@@ -14,8 +14,8 @@ session_start();
             <ul>
 
                 <?php
-                    if(isset($_SESSION["newsession"])) {
-                        $logado = $_SESSION["newsession"]
+                    if(isset($_SESSION["nome"])) {
+                        $logado = $_SESSION["nome"]
                         ?>
                             <li style="color: white;"> <?php echo "Bem vindo $logado";  ?></li> 
                             <li><a href="listar_rhs.php">Rhs</a></li>

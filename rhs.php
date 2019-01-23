@@ -23,11 +23,19 @@ include_once("services/conexao_rhs.php");
 
 <!--VALIDAÇÃO DE SESSAO-->    
 <?php
-    
-    if (!isset($_SESSION["newsession"])){
-        echo("Não autorizado");
-        header('Location: nao_autorizado.php');
+if (isset( $_SESSION["timer"] ) ) { 
+    if ($_SESSION["timer"] < time() ) { 
+        session_destroy();		
+        header('Location: sessao_expirada.php');
+    } else {
+        //Seta mais tempo 60 segundos
+        $_SESSION["timer"] = time() + 300;
     }
+} else { 
+    session_destroy();
+    header('Location: sessao_expirada.php');	
+    //Redireciona para login
+}
 ?>
             
 <!--TITULO-->	
@@ -55,12 +63,12 @@ include_once("services/conexao_rhs.php");
             
         </div>
         
-        <input class="btn-C" type="submit" value="Cadastrar" style="cursor: pointer; width: 93px; padding:6px;">
+        <input class="btn-C" type="submit" value="Salvar" style="cursor: pointer; width: 93px; padding:6px;">
     </form>
 
 
-</div>		    
-               
+</div>
+
 <!--INCLUSAO DO FOOTER-->    
 <?php
     include_once("footer.php");

@@ -5,7 +5,7 @@
 <head>
         <meta charset="utf-8">
         <meta name="viweport" content="width=device-width, initial-scale=1">
-        <title>Fresadora Sanana</title>
+        <title>RHS</title>
         <meta name="robots" content="index, follow">
         <meta name="author" content="Guilherme Felipe de Oliveira">
         <link rel="stylesheet" href="css/style.css">

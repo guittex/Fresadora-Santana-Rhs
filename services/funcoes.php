@@ -1,6 +1,6 @@
 <?php
 
-function teste($resultado_usuario){
+function loop($resultado_usuario){
     while($row_usuario = sqlsrv_fetch_array($resultado_usuario)){
         echo "<tr>";
         echo "<td>" . $row_usuario['ID_RHS'] . "</td>";

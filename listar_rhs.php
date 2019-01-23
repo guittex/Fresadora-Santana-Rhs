@@ -2,8 +2,8 @@
 include_once("services/conexao_rhs.php");
 include_once("services/funcoes.php");
 
-$result_orcamento = "SELECT * FROM dbo.RHS ORDER BY ID_RHS DESC;";
-$resultado_orcamento = sqlsrv_query($con, $result_orcamento);
+$sql = "SELECT * FROM dbo.RHS ORDER BY ID_RHS DESC;";
+$query = sqlsrv_query($con, $sql);
 
 
 ?>
@@ -22,9 +22,24 @@ include_once("header.php");
 
 <body style="font-size: 24px;">
 
-<!--IMPORTACAO DO MENU-->        
+<!--IMPORTACAO DO MENU--> 
 <?php
 include_once("menu.php");
+
+//Verifica se tem a sessão
+if ( isset( $_SESSION["timer"] ) ) { 
+	if ($_SESSION["timer"] < time() ) { 
+        session_destroy();		
+        header('Location: sessao_expirada.php');
+	} else {
+		//Seta mais tempo para o timer
+		$_SESSION["timer"] = time() + 300;
+	}
+} else { 
+    session_destroy();
+    header('Location: sessao_expirada.php');	
+	//Redireciona para login
+}
 ?>
 
 <!--INICIO DO CONTAINER-->
@@ -49,11 +64,11 @@ include_once("menu.php");
 
     <!--TABELA LISTAR RHS-->
     <div class="row" id="tabela_listar_rhs" STYLE="display: inherit;">
-        <div class="col-md-12 table-responsive shadow p-3 mb-5 bg-white rounded">
+        <div class="col-md-12 table-striped table-responsive shadow p-3 mb-5 bg-white rounded">
             <table class="table">
                 <thead class="">
                 <tr>
-                    <th>ID</th>
+                    <th class="">ID</th>
                     <th>SERVIÇO</th>
                     <th>DATA</th>				
                     <th><a href=rhs.php><button type=button class='btn btn-xs btn-success' style='margin: 0px 6px 0px'>Solicitar</button></a>
@@ -62,7 +77,7 @@ include_once("menu.php");
                         $SendPesqUser = filter_input(INPUT_POST, 'SendPesqUser', FILTER_SANITIZE_STRING);
                         if($SendPesqUser){
                             echo "<th>"; 
-                            echo "<button type=button class='btn btn-xs btn-dark' style='margin-left: 5px'><a href=listar_rhs.php style='color: inherit'</a>Voltar</button>";
+                            echo "<button type=button class='btn btn-xs btn-dark'><a href=listar_rhs.php style='color: inherit'</a>Voltar</button>";
                             echo "</th>";
                         }
                         
@@ -79,12 +94,12 @@ include_once("menu.php");
                 if($SendPesqUser){
                     $ID_RHS = filter_input(INPUT_POST, 'ID_RHS', FILTER_SANITIZE_NUMBER_INT);
 					$OBS= filter_input(INPUT_POST, 'OBS', FILTER_SANITIZE_STRING);
-                    $result_usuario = "SELECT * FROM dbo.RHS WHERE ID_RHS = $ID_RHS  ";
+                    $sql_comparacao = "SELECT * FROM dbo.RHS WHERE ID_RHS = $ID_RHS  ";
                     if ($OBS > " ") {
-                    	$result_usuario = "SELECT * FROM dbo.RHS WHERE OBS LIKE '%$OBS%' ";
+                    	$sql_comparacao = "SELECT * FROM dbo.RHS WHERE OBS LIKE '%$OBS%' ";
                     }	
-                    $resultado_usuario = sqlsrv_query($con, $result_usuario);
-                    teste($resultado_usuario);
+                    $query = sqlsrv_query($con, $sql_comparacao);
+                    loop($query);
                 }
 
                 ?>	
@@ -92,16 +107,16 @@ include_once("menu.php");
                 <!-- Inicio Loop sem pesquisar-->                    
                 <?php                  
     
-                    while($rows_orcamento = sqlsrv_fetch_array($resultado_orcamento)){                                                    
+                    while($rows = sqlsrv_fetch_array($query)){                                                    
 
                 ?>
 
                 <tr>
                     <?php
                         if(!$SendPesqUser){
-                            echo "<td>" . $rows_orcamento['ID_RHS'] . "</td>";
-                            echo "<td>" . $rows_orcamento['OBS'] . "</td>";
-                            echo "<td>" . $rows_orcamento['DT_RHS']->format('d-m-Y') . "</td>";
+                            echo "<td class=''>" . $rows['ID_RHS'] . "</td>";
+                            echo "<td>" . $rows['OBS'] . "</td>";
+                            echo "<td>" . $rows['DT_RHS']->format('d-m-Y') . "</td>";
                         }
                     ?>
                 </tr>
