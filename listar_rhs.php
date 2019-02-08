@@ -1,11 +1,6 @@
 <?php
-include_once("services/conexao_rhs.php");
-include_once("services/funcoes.php");
-
-$sql = "SELECT * FROM dbo.RHS ORDER BY ID_RHS DESC;";
-$query = sqlsrv_query($con, $sql);
-
-
+include_once("services/rhs.php");
+$rhs = new conexao_rhs();
 ?>
 
 
@@ -43,7 +38,7 @@ if ( isset( $_SESSION["timer"] ) ) {
 ?>
 
 <!--INICIO DO CONTAINER-->
-<div class="container theme-showcase" role="main">
+<div class="container-fluid theme-showcase" role="main">
 
     <!--TITULO LISTAR RHS-->
     <div class="page-header">
@@ -53,7 +48,7 @@ if ( isset( $_SESSION["timer"] ) ) {
     <!--PESQUISAR RHS POR ID-->
     <div class="row" style="display: inherit; margin-top: 40px">
         <div class="col-12">
-            <form method="POST">
+            <form method="POST">                
                 <label style="font-size: 18px;">Nome:</label>
                 <input type="text" name="ID_RHS" placeholder="Digite o ID para pesquisar" style="padding: 0%; width: 33%;">
                 <input type="text" name="OBS" placeholder="Digite alguma palavra para pesquisar" style="padding: 0%; width: 33%;">
@@ -68,16 +63,16 @@ if ( isset( $_SESSION["timer"] ) ) {
             <table class="table">
                 <thead class="">
                 <tr>
-                    <th class="">ID</th>
+                    <th class="">RHS</th>
                     <th>SERVIÇO</th>
                     <th>DATA</th>				
-                    <th><a href=rhs.php><button type=button class='btn btn-xs btn-success' style='margin: 0px 6px 0px'>Solicitar</button></a>
+                    <th><a href=cadastrar_rhs.php><button type=button class='btn btn-xs btn-success' style='margin: 0px 6px 0px'>Solicitar</button></a>
 
                     <?php
                         $SendPesqUser = filter_input(INPUT_POST, 'SendPesqUser', FILTER_SANITIZE_STRING);
                         if($SendPesqUser){
                             echo "<th>"; 
-                            echo "<button type=button class='btn btn-xs btn-dark'><a href=listar_rhs.php style='color: inherit'</a>Voltar</button>";
+                            echo "<a href=listar_rhs.php style='color: inherit'</a><button type=button class='btn btn-xs btn-dark'>Voltar</button>";
                             echo "</th>";
                         }
                         
@@ -88,43 +83,26 @@ if ( isset( $_SESSION["timer"] ) ) {
 
                 <tbody>
 
-                <!--Inicio Loop com pesquisar por ID-->
+                <!--Inicio Loop com pesquisar-->
                 <?php
                 $SendPesqUser = filter_input(INPUT_POST, 'SendPesqUser', FILTER_SANITIZE_STRING);
-                if($SendPesqUser){
+                if($SendPesqUser){     
                     $ID_RHS = filter_input(INPUT_POST, 'ID_RHS', FILTER_SANITIZE_NUMBER_INT);
-					$OBS= filter_input(INPUT_POST, 'OBS', FILTER_SANITIZE_STRING);
-                    $sql_comparacao = "SELECT * FROM dbo.RHS WHERE ID_RHS = $ID_RHS  ";
-                    if ($OBS > " ") {
-                    	$sql_comparacao = "SELECT * FROM dbo.RHS WHERE OBS LIKE '%$OBS%' ";
-                    }	
-                    $query = sqlsrv_query($con, $sql_comparacao);
-                    loop($query);
+                    $OBS= filter_input(INPUT_POST, 'OBS', FILTER_SANITIZE_STRING);        
+                    $rhs->pesquisar($ID_RHS,$OBS);
                 }
 
-                ?>	
-                
-                <!-- Inicio Loop sem pesquisar-->                    
-                <?php                  
-    
-                    while($rows = sqlsrv_fetch_array($query)){                                                    
-
-                ?>
-
+                ?>	                
+                <!-- Inicio Loop sem pesquisar-->                 
                 <tr>
                     <?php
-                        if(!$SendPesqUser){
-                            echo "<td class=''>" . $rows['ID_RHS'] . "</td>";
-                            echo "<td>" . $rows['OBS'] . "</td>";
-                            echo "<td>" . $rows['DT_RHS']->format('d-m-Y') . "</td>";
+                        if(!$SendPesqUser){                                   
+                            $rhs->pesquisar("","");        
                         }
                     ?>
-                </tr>
-                
-                <?php }  ?>
+                </tr>         
                 </tbody>
-            </table>     
-        
+            </table>        
         </div>
     </div>
 

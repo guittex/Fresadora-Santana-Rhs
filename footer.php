@@ -1,13 +1,15 @@
 <?php
 
+namespace footer;
+
 ?>
 
 <!---Rodapé-->
 <footer class="rodape">
     <div class="social-icon" style="margin-bottom:15px;">
-        <a href="#"><i class="fa fa-facebook"></i></a>
-        <a href="#"><i class="fa fa-instagram"></i></a>
-        <a href="contato.php"><i class="fa fa-envelope"></i></a>
+        <a href="http://www.fresadorasantana.com.br/site/index.html"><i class="fas fa-home"></i></a>
+        <a href="http://192.168.1.214:8086/ramais/listar_ramais_modal.php"><i class="fas fa-phone"></i></a>
+        <a href="https://webmail.fresadorasantana.com.br"><i class="fa fa-envelope"></i></a>
     </div>
     <div class="footer" style="font-size: 15px">
         <a href="http://www.fresadorasantana.com.br/site/index.html">Home</a>
