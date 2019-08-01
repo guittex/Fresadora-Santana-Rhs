@@ -15,7 +15,7 @@ include_once("sql_conexao.php");
             $this->sql_conexao("USUARIO");           
             $Login = $_POST['Login'];
             $Senha = $_POST['Senha']; 
-            $sql = "SELECT * FROM dbo.TB_Usuario WHERE Login = '$Login' and Senha = '$Senha' "; 
+            $sql = "SELECT * FROM dbo.TB_Usuario WHERE Login = '$Login' and Senha = '$Senha' and Nivel = 0 "; 
             //Query da consulta sql            
             $this->query = sqlsrv_query($this->con, $sql);
             //Array da query
@@ -39,11 +39,20 @@ include_once("sql_conexao.php");
             $this->Nome = " Sr. " . $this->registro['Nome'];
             return $this->Nome;
 
+            var_dump($this->Nome);
+
+
         }
 
         public function setNome(){
 
         } 
+
+        public function getAcesso(){
+            $this->Acessos = $this->registro['acessoPadrao'];
+            return $this->Acessos;
+
+        }
 
         public function logoff(){
             session_start();

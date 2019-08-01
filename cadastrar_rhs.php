@@ -2,7 +2,13 @@
 include_once("services/rhs.php");
 $cadastrar = new conexao_rhs();
 ?>
+<style>
 
+input{
+    font-size:15px!important;
+}
+
+</style>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -70,9 +76,19 @@ if (isset( $_SESSION["timer"] ) ) {
     </form>
 
     <?php
+        $rhs = filter_input(INPUT_POST, 'rhs', FILTER_SANITIZE_STRING);
+        $rhs1 = filter_input(INPUT_POST, 'rhs1', FILTER_SANITIZE_STRING);
+        $rhs2 = filter_input(INPUT_POST, 'rhs2', FILTER_SANITIZE_STRING);
         $enviar = filter_input(INPUT_POST, 'enviar', FILTER_SANITIZE_STRING);
         if($enviar){
-            $cadastrar->cadastrar();
+            if($rhs == "" or $rhs1 == "" or $rhs2 == ""){
+                echo
+                "<script>
+                    alert('Campo vazio não preenchido');
+                </script>";
+            }else{
+                $cadastrar->cadastrar();
+            }
         }
 
     ?>

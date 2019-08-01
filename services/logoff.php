@@ -1,7 +1,9 @@
 <?php
 session_start();
-session_destroy();
-header('Location: ../login.php');
+if ($_SESSION["timer"]){
+    unset($_SESSION["timer"]);
+    header('Location: ../login.php');    
+}
 
 ?>
 

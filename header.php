@@ -8,7 +8,6 @@ namespace header
         <meta charset="utf-8">
         <meta name="viweport" content="width=device-width, initial-scale=1">
         <title>RHS</title>
-        <meta name="robots" content="index, follow">
         <meta name="author" content="Guilherme Felipe de Oliveira">
         <link rel="stylesheet" href="public/css/style.css">
         <link rel="stylesheet" href="public/css/bootstrap.css">

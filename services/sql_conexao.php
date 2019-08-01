@@ -13,13 +13,13 @@ class conexao{
 
         $database = strtoupper($database);
         //Banco padrao
-        $this->servidor = "CPU-105";
+        $this->servidor = "ENTERPRISE\ENTERPRISE";
         $this->usuario = "sa";
-        $this->pass = "teste123";
+        $this->pass = "atusfresadora";
         $this->database = $database;
         
         if($database == "RHS"){        
-            $this->database = "teste";
+            $this->database = "FS_NEW";
         
         }
         if($database == "USUARIO"){            
@@ -37,8 +37,14 @@ class conexao{
             die(print_r(sqlsrv_errors(), true));
 
         }
-
     }
+
+        public function getConexao(){
+            return var_dump($this->con);
+        }
+
+    
+    
 
 }
 

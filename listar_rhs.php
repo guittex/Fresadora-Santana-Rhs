@@ -1,6 +1,10 @@
 <?php
 include_once("services/rhs.php");
+include_once("services/sql_conexao.php");
 $rhs = new conexao_rhs();
+
+
+
 ?>
 
 
@@ -49,7 +53,7 @@ if ( isset( $_SESSION["timer"] ) ) {
     <div class="row" style="display: inherit; margin-top: 40px">
         <div class="col-12">
             <form method="POST">                
-                <label style="font-size: 18px;">Nome:</label>
+                <!--<label style="font-size: 18px;">Nome:</label>-->
                 <input type="text" name="ID_RHS" placeholder="Digite o ID para pesquisar" style="padding: 0%; width: 33%;">
                 <input type="text" name="OBS" placeholder="Digite alguma palavra para pesquisar" style="padding: 0%; width: 33%;">
                 <button name="SendPesqUser" id="SendPesqUser" class="btn btn-xs btn-dark"  value="Pesquisar"> Pesquisar</button>			 
@@ -60,20 +64,21 @@ if ( isset( $_SESSION["timer"] ) ) {
     <!--TABELA LISTAR RHS-->
     <div class="row" id="tabela_listar_rhs" STYLE="display: inherit;">
         <div class="col-md-12 table-striped table-responsive shadow p-3 mb-5 bg-white rounded">
-            <table class="table">
+            <table class="table ">
                 <thead class="">
                 <tr>
                     <th class="">RHS</th>
                     <th>SERVIÇO</th>
-                    <th>DATA</th>				
-                    <th><a href=cadastrar_rhs.php><button type=button class='btn btn-xs btn-success' style='margin: 0px 6px 0px'>Solicitar</button></a>
-
+                    <th>DATA</th>
+                    <th><a href=cadastrar_rhs.php><button type=button class='btn btn-xs btn-success' style='margin: 0px 6px 0px'>Solicitar</button></a></th>
+                    
                     <?php
                         $SendPesqUser = filter_input(INPUT_POST, 'SendPesqUser', FILTER_SANITIZE_STRING);
                         if($SendPesqUser){
                             echo "<th>"; 
                             echo "<a href=listar_rhs.php style='color: inherit'</a><button type=button class='btn btn-xs btn-dark'>Voltar</button>";
                             echo "</th>";
+                            
                         }
                         
                     ?>
@@ -88,8 +93,16 @@ if ( isset( $_SESSION["timer"] ) ) {
                 $SendPesqUser = filter_input(INPUT_POST, 'SendPesqUser', FILTER_SANITIZE_STRING);
                 if($SendPesqUser){     
                     $ID_RHS = filter_input(INPUT_POST, 'ID_RHS', FILTER_SANITIZE_NUMBER_INT);
-                    $OBS= filter_input(INPUT_POST, 'OBS', FILTER_SANITIZE_STRING);        
-                    $rhs->pesquisar($ID_RHS,$OBS);
+                    $OBS= filter_input(INPUT_POST, 'OBS', FILTER_SANITIZE_STRING);       
+                    if($ID_RHS == "" && $OBS == ""){
+                        echo
+                        "<script>
+                            alert('Digite algo para pesquisar');
+                            window.location.href=' listar_rhs.php';
+                        </script>";
+                    } else{
+                        $rhs->pesquisar($ID_RHS,$OBS);
+                    }
                 }
 
                 ?>	                
@@ -101,13 +114,14 @@ if ( isset( $_SESSION["timer"] ) ) {
                         }
                     ?>
                 </tr>         
+                
                 </tbody>
-            </table>        
+            </table>            
         </div>
     </div>
 
+   
 </div>
-
 
 <!-- Inicio Modal CADASTRAR
 <div class="modal fade" id="myModalcad" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"  >
@@ -237,8 +251,7 @@ include_once("footer.php");
         modal.find('#recipient-departamento').val(recipientdepartamento)
         modal.find('#recipient-ramal').val(recipientramal)
         modal.find('#recipient-email').val(recipientemail)
-        modal.find('#recipient-corporativo').val(recipientcorporativo)
-      
+        modal.find('#recipient-corporativo').val(recipientcorporativo)      
     })
 </script>
 </body>

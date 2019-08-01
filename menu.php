@@ -7,7 +7,7 @@ $usuario = new usuario();
 ?>
 
 <header class="cabecalho">
-        <a href="http://192.168.1.214:8086/ramais/listar_ramais_modal.php"><img src="public/img/logo_fresadora.jpg"></a>           
+        <a href="listar_rhs.php"><img src="public/img/logo_fresadora.jpg"></a>           
         <button class="btn-menu"><i class="fa fa-bars fa-lg " aria-hidden="true"></i></button>
 
         <nav class="menu">
